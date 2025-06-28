@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resolution</title>
+</head>
+<body>
+    <h1>Resolution:</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Numbers</button>
+    </form>
+    {% if numbers.number1 is not None and numbers.number2 is not None %}
+        <p>Current saved numbers: {{ numbers.number1 }}, {{ numbers.number2 }}</p>
+    {% endif %}
+    <a href="/">Back to Home</a>
+</body>
+</html>

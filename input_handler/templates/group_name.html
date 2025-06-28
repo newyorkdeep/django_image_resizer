@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Group name</title>
+</head>
+<body>
+    <h1>Name:</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    {% if name is not None %}
+        <p>Current name: {{ name }}</p>
+    {% endif %}
+    <a href="/">Back to Home</a>
+</body>
+</html>

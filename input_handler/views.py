@@ -72,6 +72,17 @@ def resize_image(image_path, size):
 def index(request):
     global GLOBAL_NUMBERS
     global GLOBAL_NAME
+    def get_file_size(path):
+        try:
+            size = os.path.getsize(path)
+            for unit in ['B', 'KB', 'MB', 'GB']:
+                if size < 1024.0:
+                    return f"{size:.1f} {unit}"
+                size /= 1024.0
+            return f"{size:.1f} TB"
+        except Exception:
+            return "Unknown size"
+
     if request.method == 'POST' and request.FILES:
         images = request.FILES.getlist('image')
         for img in images:
@@ -82,8 +93,18 @@ def index(request):
             # Save to model
             UploadedImage.objects.create(image=filename)
         items = UploadedImage.objects.all()
+        for item in items:
+            if item.image and hasattr(item.image, 'path') and os.path.isfile(item.image.path):
+                item.file_size = get_file_size(item.image.path)
+            else:
+                item.file_size = "Unknown size"
         return render(request, 'index.html', {'items': items, 'numbers': GLOBAL_NUMBERS, 'group_name': GLOBAL_NAME})
-    items=UploadedImage.objects.all()
+    items = UploadedImage.objects.all()
+    for item in items:
+        if item.image and hasattr(item.image, 'path') and os.path.isfile(item.image.path):
+            item.file_size = get_file_size(item.image.path)
+        else:
+            item.file_size = "Unknown size"
     return render(request, 'index.html', {'items': items, 'numbers': GLOBAL_NUMBERS, 'group_name': GLOBAL_NAME})
 
 def number_input(request):

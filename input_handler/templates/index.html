@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <h1>Welcome to the app</h1>
         <p>Resolution: Width: {{numbers.number1}} Height: {{numbers.number2}}</p>
         <p>Group Name: {% if group_name %}{{ group_name }}{% else %}Not assigned{% endif %}</p>
         <form method="post" enctype="multipart/form-data">
@@ -10,7 +9,7 @@
         <button type="submit">Upload</button>
         </form>
         {% for item in items %}
-            <p>{{item.image}} ({{ item.resolutiontxt }})
+            <p>{{item.image}} <span style="color:gray;">[{{ item.file_size }}]</span> ({{ item.resolutiontxt }})
             <a href="{% url 'download_image' item.id %}"><button type="button">Download</button></a> </p>
         {% endfor %}
         <p></p>

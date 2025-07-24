@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,10 +54,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'django_image_resizer.urls'
 
+# Dynamically set template directory for PyInstaller compatibility
+if hasattr(sys, '_MEIPASS'):
+    TEMPLATE_DIR = os.path.join(sys._MEIPASS, 'templates')
+else:
+    TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

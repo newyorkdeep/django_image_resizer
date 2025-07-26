@@ -197,4 +197,3 @@ def nuke(request):
         # Delete the database record
         item.delete()
     return redirect('index')
-

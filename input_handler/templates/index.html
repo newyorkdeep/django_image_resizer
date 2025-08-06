@@ -1,5 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
     <body>
         <p>Resolution: Width: {{numbers.number1}} Height: {{numbers.number2}}</p>
         <p>Group Name: {% if group_name %}{{ group_name }}{% else %}Not assigned{% endif %}</p>

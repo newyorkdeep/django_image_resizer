@@ -5,9 +5,11 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
     <body>
+        <div class="rounded-square-container">
+        <div class="thecontent-itself">
         <p>Resolution: Width: {{numbers.number1}} Height: {{numbers.number2}}</p>
         <p>Group Name: {% if group_name %}{{ group_name }}{% else %}Not assigned{% endif %}</p>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" class="uploading-form">
         {% csrf_token %}
         <input type="file" name="image" multiple>
         <button type="submit">Upload</button>
@@ -42,5 +44,7 @@
         </script>
         <a href="/convert_all_images_to_jpg"><button type="button">Convert All to JPG</button></a>
         <a href="/convert_all_images_to_png"><button type="button">Convert All to PNG</button></a>
+        </div>    
+        </div>
     </body>
 </html>

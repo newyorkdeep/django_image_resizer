@@ -44,14 +44,18 @@ def download_all_images(request):
     from .models import UploadedImage
     images = UploadedImage.objects.all()
     zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+    # Use compression and stream the response to avoid partial/corrupt archives
+    with zipfile.ZipFile(zip_buffer, mode='w', compression=zipfile.ZIP_DEFLATED) as zip_file:
         for img in images:
-            if img.image and hasattr(img.image, 'path') and os.path.isfile(img.image.path):
-                zip_file.write(img.image.path, os.path.basename(img.image.path))
+            try:
+                if img.image and hasattr(img.image, 'path') and os.path.isfile(img.image.path):
+                    arcname = os.path.basename(img.image.path)
+                    zip_file.write(img.image.path, arcname=arcname)
+            except Exception:
+                # Skip files that cannot be read to avoid breaking the whole archive
+                continue
     zip_buffer.seek(0)
-    response = HttpResponse(zip_buffer, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename="manipulated_images.zip"'
-    return response
+    return FileResponse(zip_buffer, as_attachment=True, filename="manipulated_images.zip")
 
 def download_image(request, image_id):
     from .models import UploadedImage
@@ -92,13 +96,8 @@ def index(request):
             #resize_image(os.path.join(fs.location, filename), (800, 600))
             # Save to model
             UploadedImage.objects.create(image=filename)
-        items = UploadedImage.objects.all()
-        for item in items:
-            if item.image and hasattr(item.image, 'path') and os.path.isfile(item.image.path):
-                item.file_size = get_file_size(item.image.path)
-            else:
-                item.file_size = "Unknown size"
-        return render(request, 'index.html', {'items': items, 'numbers': GLOBAL_NUMBERS, 'group_name': GLOBAL_NAME})
+        # Use Post/Redirect/Get to prevent duplicate uploads when the page is refreshed
+        return redirect('index')
     items = UploadedImage.objects.all()
     for item in items:
         if item.image and hasattr(item.image, 'path') and os.path.isfile(item.image.path):

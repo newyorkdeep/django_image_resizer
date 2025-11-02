@@ -69,7 +69,7 @@ def download_image(request, image_id):
 
 def resize_image(image_path, size):
     img = PILImage.open(image_path)
-    img = img.resize(size)
+    img = img.resize(size, PILImage.LANCZOS)  # Use LANCZOS filter for better quality
     img.save(image_path)
 
 # Create your views here.

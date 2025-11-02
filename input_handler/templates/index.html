@@ -12,7 +12,7 @@
         <form method="post" enctype="multipart/form-data" class="uploading-form">
         {% csrf_token %}
         <input type="file" name="image" multiple>
-        <button type="submit">Upload</button>
+        <button type="submit" class="button2">Upload</button>
         </form>
         {% for item in items %}
             <p>{{item.image}} <span style="color:gray;">[{{ item.file_size }}]</span> ({{ item.resolutiontxt }})

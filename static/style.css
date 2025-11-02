@@ -56,12 +56,26 @@ button {
     margin-left: 3px;
 }
 
+.button2 {
+    color:#000000;
+    border: #ffffff;
+    border-radius: 9px;
+    background-color: #ffffff;
+    padding: 2px;
+    padding-inline: 20px;
+    padding-block: 20px;
+    box-shadow: none;
+    margin-right: 3px;
+    margin-left: 3px;
+    border: 1px solid #000000;
+}
+
 .container {
     max-width: 900px;
     margin: 40px auto;
     background: #fff;
     padding: 30px;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 

@@ -16,7 +16,7 @@
         </form>
         {% for item in items %}
             <p>{{item.image}} <span style="color:gray;">[{{ item.file_size }}]</span> ({{ item.resolutiontxt }})
-            <a href="{% url 'download_image' item.id %}"><button type="button">Download</button></a> </p>
+            <a href="{% url 'download_image' item.id %}"><button type="button">Download</button></a></p>
         {% endfor %}
         <p></p>
         <a href="/nuke"><button type="button">Clean everything</button></a>

@@ -9,13 +9,16 @@ body {
 }
 
 .rounded-square-container {
-        width: 100vw; 
-        height: 100vh;
-        border: 2px solid #333; /* Optional: Add a border for visibility */
-        border-radius: 20px; /* Adjust this value to control the roundness of the corners */
-        background-color: #e1e1e1; /* Optional: Add a background color */
-        box-sizing: border-box; /* Ensures padding and border are included in the width/height */
-        overflow: hidden; /* Important if content might extend beyond rounded corners */
+    width: 100vw; 
+    height: 100vh;
+    border: 2px solid #333; /* Optional: Add a border for visibility */
+    border-radius: 20px; /* Adjust this value to control the roundness of the corners */
+    background-color: #e1e1e1; /* Optional: Add a background color */
+    box-sizing: border-box; /* Ensures padding and border are included in the width/height */
+    overflow: hidden; /* Important if content might extend beyond rounded corners */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    overflow-x: auto;
 }
 
 .uploading-form {
@@ -27,6 +30,7 @@ body {
 .thecontent-itself {
     margin: 2vh;
     justify-self: center;
+
 }
 
 h1, h2, h3, h4, h5, h6 {

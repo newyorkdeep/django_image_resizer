@@ -15,8 +15,17 @@
         <button type="submit" class="button2">Upload</button>
         </form>
         {% for item in items %}
-            <p>{{item.image}} <span style="color:gray;">[{{ item.file_size }}]</span> ({{ item.resolutiontxt }})
-            <a href="{% url 'download_image' item.id %}"><button type="button">Download</button></a></p>
+            <div class="item">
+                <a href="{{ item.image.url }}" data-title="{{ item.image }}">
+                    {% if item.thumbnail %}
+                        <img src="{{ item.thumbnail.url }}" class="rounded-thumbnail" alt="{{ item.image }}">
+                    {% else %}
+                        <img src="{{ item.image.url }}" class="rounded-thumbnail" alt="{{ item.image }}">
+                    {% endif %}
+                </a>
+                <p>{{ item.image }} <span style="color:gray;">[{{ item.file_size }}]</span> ({{ item.resolutiontxt }})
+                <a href="{% url 'download_image' item.id %}"><button type="button">Download</button></a></p>
+            </div>
         {% endfor %}
         <p></p>
         <a href="/nuke"><button type="button">Clean everything</button></a>

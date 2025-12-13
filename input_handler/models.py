@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class UploadedImage(models.Model):
     image = models.ImageField(upload_to='img/')
+    updated_at = models.DateTimeField(auto_now=True)
     @property
     def resolution(self):
         from PIL import Image as PILImage

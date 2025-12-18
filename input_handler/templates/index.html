@@ -9,6 +9,7 @@
         <div class="thecontent-itself">
         <p>Resolution: Width: {{numbers.number1}} Height: {{numbers.number2}}</p>
         <p>Group Name: {% if group_name %}{{ group_name }}{% else %}Not assigned{% endif %}</p>
+        <p>Chosen Quality: {% if numbers.number3 == None or numbers.number3 == 100 %}{{numbers.number3}} (lossless){% else %}{{numbers.number3}}{% endif %}</p>
         <form method="post" enctype="multipart/form-data" class="uploading-form">
         {% csrf_token %}
         <input type="file" name="image" multiple>

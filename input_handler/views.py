@@ -7,19 +7,25 @@ from PIL import Image as PILImage
 from django.shortcuts import redirect
 import os
 import io
+from io import BytesIO
+from django.core.files.base import ContentFile
 import zipfile
 from django.http import HttpResponse
 from django.http import FileResponse
 from django.conf import settings
 
 # Global storage for numbers
-GLOBAL_NUMBERS = {'number1': None, 'number2': None}
+GLOBAL_NUMBERS = {'number1': None, 'number2': None, 'number3': None}
 GLOBAL_NAME = None
 
-def resize_all_images(request, size=None):
+def resize_all_images(request, size=None, quality=None):
     from .models import UploadedImage
     if size is None:
         size = (GLOBAL_NUMBERS['number1'], GLOBAL_NUMBERS['number2'])
+    if quality is None:
+        quality = GLOBAL_NUMBERS['number3']
+    if quality==None: 
+        quality=100
     items = UploadedImage.objects.all()
     for item in items:
         if item.image and hasattr(item.image, 'path'):
@@ -28,13 +34,13 @@ def resize_all_images(request, size=None):
                 if (size[0]==None and size[1]!=None):
                     oldwidth, oldheight = item.resolution
                     newwidth=int(size[1]*(oldwidth/oldheight))
-                    resize_image(item.image.path, (newwidth, size[1]))
+                    resize_image(item.image.path, (newwidth, size[1]), quality)
                 elif (size[0]!=None and size[1]==None):
                     oldwidth, oldheight = item.resolution
                     newheight=int(size[0]*(oldheight/oldwidth))
-                    resize_image(item.image.path, (size[0], newheight))
+                    resize_image(item.image.path, (size[0], newheight), quality)
                 else:
-                    resize_image(item.image.path, size)
+                    resize_image(item.image.path, size, quality)
             except Exception as e:
                 # Optionally log the error
                 pass
@@ -67,10 +73,10 @@ def download_image(request, image_id):
         # Handle file not found
         return HttpResponse('File not found', status=404)
 
-def resize_image(image_path, size):
+def resize_image(image_path, size, quality):
     img = PILImage.open(image_path)
     img = img.resize(size, PILImage.LANCZOS)  # Use LANCZOS filter for better quality
-    img.save(image_path)
+    img.save(image_path, quality=quality)
 
 # Create your views here.
 def index(request):
@@ -113,8 +119,9 @@ def number_input(request):
         if form.is_valid():
             GLOBAL_NUMBERS['number1'] = form.cleaned_data['number1']
             GLOBAL_NUMBERS['number2'] = form.cleaned_data['number2']
+            GLOBAL_NUMBERS['number3'] = form.cleaned_data['number3']
             #return render(request, 'index.html', {'numbers': GLOBAL_NUMBERS})
-            return resize_all_images(request, (GLOBAL_NUMBERS['number1'], GLOBAL_NUMBERS['number2']))
+            return resize_all_images(request, (GLOBAL_NUMBERS['number1'], GLOBAL_NUMBERS['number2']), GLOBAL_NUMBERS['number3'])
     else:
         form = NumberInputForm()
     return render(request, 'number_input.html', {'form': form, 'numbers': GLOBAL_NUMBERS})
